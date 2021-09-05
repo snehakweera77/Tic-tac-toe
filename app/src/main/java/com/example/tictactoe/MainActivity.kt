@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     var activePlayer = 1
@@ -43,7 +46,32 @@ class MainActivity : AppCompatActivity() {
             player2.add(cellId)
         }
         btnSelected.isEnabled = false
+        autoPlay()
         checkWinner()
+    }
+
+    private fun autoPlay() {
+        var emptyCells = ArrayList<Int>()
+        for (cellId in 1..9) {
+            if (!player1.contains(cellId) && !player2.contains(cellId))
+                emptyCells.add(cellId)
+        }
+        var r = Random()
+        val randomIndex: Int = r.nextInt(emptyCells.size)
+        val cellId:Int = emptyCells[randomIndex]
+        var btnSelected:Button = when(cellId) {
+            1 -> button1
+            2 -> button2
+            3 -> button3
+            4 -> button4
+            5 -> button5
+            6 -> button6
+            7 -> button7
+            8 -> button8
+            9 -> button9
+            else -> button1
+        }
+        playGame(cellId, btnSelected)
     }
 
     private fun checkWinner() {
