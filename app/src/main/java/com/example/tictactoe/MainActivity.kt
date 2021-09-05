@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     var activePlayer = 1
     var player1 = ArrayList<Int>()
     var player2 = ArrayList<Int>()
+    var player1Wins:Int = 0
+    var player2Wins:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +58,8 @@ class MainActivity : AppCompatActivity() {
             if (!player1.contains(cellId) && !player2.contains(cellId))
                 emptyCells.add(cellId)
         }
+        if (emptyCells.size == 0)
+            restartGame()
         var r = Random()
         val randomIndex: Int = r.nextInt(emptyCells.size)
         val cellId:Int = emptyCells[randomIndex]
@@ -117,10 +121,37 @@ class MainActivity : AppCompatActivity() {
         if (player2.contains(3) && player2.contains(5) && player2.contains(7))
             winner = 2
 
-        if (winner == 1)
+        if (winner == 1) {
+            player1Wins++;
             Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
-        else
+            restartGame()
+        }
+        else {
+            player2Wins++
             Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-
+            restartGame()
+        }
+    }
+    fun restartGame() {
+        activePlayer = 1;
+        player1.clear()
+        player2.clear()
+        for(cellId in 1..9) {
+            var btnSelected:Button = when(cellId) {
+                1 -> button1
+                2 -> button2
+                3 -> button3
+                4 -> button4
+                5 -> button5
+                6 -> button6
+                7 -> button7
+                8 -> button8
+                9 -> button9
+                else -> button1
+            }
+            btnSelected!!.text = ""
+            btnSelected!!.setBackgroundResource(R.color.whiteButton)
+            btnSelected.isEnabled = true
+        }
     }
 }
